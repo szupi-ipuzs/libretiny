@@ -1,6 +1,7 @@
 /* Copyright (c) Kuba Szczodrzyński 2022-06-27. */
 
 #include "WiFiPrivate.h"
+#include <libretiny.h>
 
 WiFiStatus WiFiClass::begin(
 	const char *ssid,
@@ -29,8 +30,14 @@ WiFiStatus WiFiClass::begin(
 	STA_ADV_CFG.ap_info.channel		= channel;
 	STA_ADV_CFG.wifi_retry_interval = 100;
 
-	if (reconnect(bssid))
+	// Feed watchdog before potentially long-blocking reconnect
+	lt_wdt_feed();
+
+	if (reconnect(bssid)) {
+		// Feed watchdog after reconnect
+		lt_wdt_feed();
 		return WL_CONNECTED;
+	}
 
 	return WL_CONNECT_FAILED;
 }
