@@ -1,19 +1,20 @@
 /* Copyright (c) Martin Prokopič 2024-12-03. */
 
-#include <device_lock.h>
 #include <libretiny.h>
-#include <osdep_service.h>
 #include <sdk_private.h>
+
+#include <device_lock.h>
+#include <osdep_service.h>
 
 // from SDK
 extern uint32_t sys_update_ota_get_curr_fw_idx(void);
 
 #define FLASH_SECTOR_SIZE		0x1000
-// IMAGE_PUBLIC_KEY is defined by the build script as an array initializer
 #define IMAGE_PUBLIC_KEY_OFFSET 32
 #define IMAGE_PUBLIC_KEY_LENGTH 32
 
-static const uint8_t lt_image_public_key[] = IMAGE_PUBLIC_KEY;
+// IMAGE_PUBLIC_KEY is defined by build script without braces to avoid shell escaping issues
+static const uint8_t lt_image_public_key[] = {IMAGE_PUBLIC_KEY};
 
 typedef enum {
 	INVALID	 = 0,
