@@ -93,23 +93,23 @@ static bool lt_ota_set_image_enabled(uint8_t index, bool new_enabled) {
 
 static bool lt_ota_update_bootloader_index()
 {
-	uint32_t value = HAL_READ32(SPI_FLASH_BASE, FLASH_SYSTEM_OFFSET + 4);
-	if (value == 0) {
-		uint8_t system[64];
-		memset(system, 0, sizeof(system));
-		lt_flash_read(FLASH_SYSTEM_OFFSET, system, 64);
+	uint8_t system[64];
+	memset(system, 0, sizeof(system));
+	lt_flash_read(FLASH_SYSTEM_OFFSET, system, 64);
+	uint32_t value = ((uint32_t *)system)[1];
+	if (value == 0)
+	{
 		// reset OTA switch
-		((uint32_t *)system)[1] = -2;
-		lt_flash_erase_block(FLASH_SYSTEM_OFFSET);
-		return lt_flash_write(FLASH_SYSTEM_OFFSET, system, 64);
+		value = -2;
 	}
-
-	// clear first non-zero bit
-	value <<= 1;
-	// write OTA switch to flash
-	HAL_WRITE32(SPI_FLASH_BASE, FLASH_SYSTEM_OFFSET + 4, value);
-
-	return true;
+	else
+	{
+		// clear first non-zero bit
+		value <<= 1;
+	}
+	((uint32_t *)system)[1] = value;
+	lt_flash_erase_block(FLASH_SYSTEM_OFFSET);
+	return lt_flash_write(FLASH_SYSTEM_OFFSET, system, 64);
 }
 
 // public interface implementation
