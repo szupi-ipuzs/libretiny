@@ -91,6 +91,27 @@ static bool lt_ota_set_image_enabled(uint8_t index, bool new_enabled) {
 	return true;
 }
 
+static bool lt_ota_update_bootloader_index()
+{
+	uint32_t value = HAL_READ32(SPI_FLASH_BASE, FLASH_SYSTEM_OFFSET + 4);
+	if (value == 0) {
+		uint8_t system[64];
+		memset(system, 0, sizeof(system));
+		lt_flash_read(FLASH_SYSTEM_OFFSET, system, 64);
+		// reset OTA switch
+		((uint32_t *)system)[1] = -2;
+		lt_flash_erase_block(FLASH_SYSTEM_OFFSET);
+		return lt_flash_write(FLASH_SYSTEM_OFFSET, system, 64);
+	}
+
+	// clear first non-zero bit
+	value <<= 1;
+	// write OTA switch to flash
+	HAL_WRITE32(SPI_FLASH_BASE, FLASH_SYSTEM_OFFSET + 4, value);
+
+	return true;
+}
+
 // public interface implementation
 
 lt_ota_type_t lt_ota_get_type() {
@@ -108,10 +129,7 @@ uint8_t lt_ota_dual_get_current() {
 }
 
 uint8_t lt_ota_dual_get_stored() {
-	uint32_t *ota_address = (uint32_t *)0x8009000;
-	if (*ota_address == 0xFFFFFFFF)
-		return 1;
-	uint32_t ota_counter = *((uint32_t *)0x8009004);
+	uint32_t ota_counter = HAL_READ32(SPI_FLASH_BASE, FLASH_SYSTEM_OFFSET + 4);
 	// even count of zero-bits means OTA1, odd count means OTA2
 	// this allows to switch OTA images by simply clearing next bits,
 	// without needing to erase the flash
@@ -140,6 +158,11 @@ bool lt_ota_switch(bool revert) {
 		return false;
 	if (!lt_ota_set_image_enabled(to_disable, false))
 		return false;
+
+	if (!lt_ota_update_bootloader_index())
+	{
+		return false;
+	}
 
 	return true;
 }
