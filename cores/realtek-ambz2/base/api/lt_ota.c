@@ -114,7 +114,7 @@ uint8_t lt_ota_dual_get_stored() {
 
 bool lt_ota_switch(bool revert) {
 	uint8_t current = lt_ota_dual_get_current();
-	uint8_t stored	= lt_ota_dual_get_stored();
+	uint8_t stored	= current; // lt_ota_dual_get_stored();
 	if ((current == stored) == revert)
 		return true;
 
