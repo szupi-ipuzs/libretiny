@@ -91,19 +91,15 @@ static bool lt_ota_set_image_enabled(uint8_t index, bool new_enabled) {
 	return true;
 }
 
-static bool lt_ota_update_bootloader_index()
-{
+static bool lt_ota_update_bootloader_index() {
 	uint8_t system[64];
 	memset(system, 0, sizeof(system));
 	lt_flash_read(FLASH_SYSTEM_OFFSET, system, 64);
 	uint32_t value = ((uint32_t *)system)[1];
-	if (value == 0)
-	{
+	if (value == 0) {
 		// reset OTA switch
 		value = -2;
-	}
-	else
-	{
+	} else {
 		// clear first non-zero bit
 		value <<= 1;
 	}
@@ -159,8 +155,7 @@ bool lt_ota_switch(bool revert) {
 	if (!lt_ota_set_image_enabled(to_disable, false))
 		return false;
 
-	if (!lt_ota_update_bootloader_index())
-	{
+	if (!lt_ota_update_bootloader_index()) {
 		return false;
 	}
 
