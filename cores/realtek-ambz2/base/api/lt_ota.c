@@ -108,8 +108,19 @@ uint8_t lt_ota_dual_get_current() {
 }
 
 uint8_t lt_ota_dual_get_stored() {
-	// bootloader prioritizes FW1 if both are valid
-	return lt_ota_get_image_state(1) == ENABLED ? 1 : 2;
+	uint32_t *ota_address = (uint32_t *)0x8009000;
+	if (*ota_address == 0xFFFFFFFF)
+		return 1;
+	uint32_t ota_counter = *((uint32_t *)0x8009004);
+	// even count of zero-bits means OTA1, odd count means OTA2
+	// this allows to switch OTA images by simply clearing next bits,
+	// without needing to erase the flash
+	uint8_t count = 0;
+	for (uint8_t i = 0; i < 32; i++) {
+		if ((ota_counter & (1 << i)) == 0)
+			count++;
+	}
+	return 1 + (count % 2);
 }
 
 bool lt_ota_switch(bool revert) {
