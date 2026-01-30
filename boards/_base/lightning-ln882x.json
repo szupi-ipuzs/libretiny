@@ -35,6 +35,24 @@
 				"Wi-Fi": "802.11 b/g/n"
 			}
 		},
+		"flashing": {
+			"links": {
+				"ltchiptool user guide": "../../docs/flashing/tools/ltchiptool.md",
+				"full flashing guide": "../../docs/platform/lightning-ln882x/README.md#flashing"
+			},
+			"pins": {
+				"PA03 / RX0": "TX of USB-UART adapter",
+				"PA02 / TX0": "RX of USB-UART adapter",
+				"PA09 / BOOT1 (strapping pin)": "GND to enter download mode",
+				"CEN (Chip-Enable)": "GND to reset the chip"
+			},
+			"guide": [
+				"Connect the USB-UART adapter.",
+				"Start the flashing process.",
+				"Connect PA09 (BOOT1) to GND.",
+				"Power-cycle the device or briefly short CEN to GND."
+			]
+		},
 		"links": {
 			"Info & flashing guide": "../../docs/platform/lightning-ln882x/README.md",
 			"Debugging": "../../docs/platform/lightning-ln882x/debugging.md"
