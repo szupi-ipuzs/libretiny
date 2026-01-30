@@ -7,7 +7,7 @@
 	"ota2": "OTA2 Image",
 	"userdata": "User Data",
 	"rdp": "RDP",
-	"kvs": "Key-Value Store",
+	"kvs": "LibreTiny Storage",
 	"nvs": "NVS",
 	"bootloader": "Bootloader",
 	"app": "App Image",
