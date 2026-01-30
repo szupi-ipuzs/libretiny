@@ -54,8 +54,8 @@
 #define PIN_WIRE0_SDA_17 23u // PB_7
 #define PIN_WIRE0_SDA_18 24u // PB_8
 #define PIN_WIRE0_SDA_19 25u // PB_9
-#define PINS_WIRE0_SCL   (pin_size_t[]){0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u, 10u, 11u, 12u, 19u, 20u, 21u, 22u, 23u, 24u, 25u}
-#define PINS_WIRE0_SDA   (pin_size_t[]){0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u, 10u, 11u, 12u, 19u, 20u, 21u, 22u, 23u, 24u, 25u}
+#define PINS_WIRE0_SCL   {0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u, 10u, 11u, 12u, 19u, 20u, 21u, 22u, 23u, 24u, 25u}
+#define PINS_WIRE0_SDA   {0u, 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u, 9u, 10u, 11u, 12u, 19u, 20u, 21u, 22u, 23u, 24u, 25u}
 
 // Serial ports
 // ------------
@@ -63,10 +63,10 @@
 #define PIN_SERIAL0_TX  2u  // PA_2
 #define PIN_SERIAL1_RX  24u // PB_8
 #define PIN_SERIAL1_TX  25u // PB_9
-#define PINS_SERIAL0_RX (pin_size_t[]){3u}
-#define PINS_SERIAL0_TX (pin_size_t[]){2u}
-#define PINS_SERIAL1_RX (pin_size_t[]){24u}
-#define PINS_SERIAL1_TX (pin_size_t[]){25u}
+#define PINS_SERIAL0_RX {3u}
+#define PINS_SERIAL0_TX {2u}
+#define PINS_SERIAL1_RX {24u}
+#define PINS_SERIAL1_TX {25u}
 
 // Pin function macros
 // -------------------
