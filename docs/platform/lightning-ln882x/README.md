@@ -69,6 +69,12 @@ If you're getting a `No response received` (or similar) error, this means that:
 - the power supply is too weak (read above)
 - you're resetting the chip too quickly, i.e. you resetted it *after* the program started communicating with it
 
+### Partition layout
+
+{%
+	include-markdown "../../inc/partition-layout.md"
+%}
+
 ### Flashing
 
 The recommended tool to flash (or dump firmware) is `ltchiptool`.
